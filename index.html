@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Registration Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            display: inline-block;
+            background: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #444;
+        }
+        #otpSection {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Teacher Registration Form</h1>
+        <form id="teacherForm">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone number:</label>
+                <input type="tel" id="phone" name="phone" required>
+                <button type="button" onclick="sendOTP()">Send OTP</button>
+            </div>
+            <div id="otpSection" class="form-group">
+                <label for="otp">Enter OTP:</label>
+                <input type="text" id="otp" name="otp">
+                <button type="button" onclick="verifyOTP()">Verify OTP</button>
+            </div>
+            <div class="form-group">
+                <label for="state">State:</label>
+                <select id="state" name="state" onchange="loadDistricts()" required>
+                    <option value="">Select State</option>
+                    <!-- Add state options here -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="district">District:</label>
+                <select id="district" name="district" onchange="loadCities()" required>
+                    <option value="">Select District</option>
+                    <!-- Districts will be populated dynamically -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="city">City:</label>
+                <select id="city" name="city" onchange="loadSchools()" required>
+                    <option value="">Select City</option>
+                    <!-- Cities will be populated dynamically -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="school">School:</label>
+                <select id="school" name="school" required>
+                    <option value="">Select School</option>
+                    <!-- Schools will be populated dynamically -->
+                </select>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <script>
+        // Populate states (you can add more states as needed)
+        const states = ['Andhra Pradesh', 'Bihar', 'Delhi', 'Gujarat', 'Karnataka', 'Maharashtra', 'Tamil Nadu', 'Uttar Pradesh'];
+        const stateSelect = document.getElementById('state');
+        states.forEach(state => {
+            const option = document.createElement('option');
+            option.value = state;
+            option.textContent = state;
+            stateSelect.appendChild(option);
+        });
+
+        // Example districts (you should replace this with actual data)
+        const districts = {
+            'Maharashtra': ['Mumbai', 'Pune', 'Nagpur'],
+            'Karnataka': ['Bangalore', 'Mysore', 'Hubli'],
+            // Add more states and their districts
+        };
+
+        function loadDistricts() {
+            const state = document.getElementById('state').value;
+            const districtSelect = document.getElementById('district');
+            districtSelect.innerHTML = '<option value="">Select District</option>';
+
+            if (districts[state]) {
+                districts[state].forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district;
+                    option.textContent = district;
+                    districtSelect.appendChild(option);
+                });
+            }
+        }
+
+        function sendOTP() {
+            const phone = document.getElementById('phone').value;
+            // Call your send_otp API here
+            console.log('Sending OTP to', phone);
+            document.getElementById('otpSection').style.display = 'block';
+        }
+
+        function verifyOTP() {
+            const otp = document.getElementById('otp').value;
+            // Call your verify_otp API here
+            console.log('Verifying OTP:', otp);
+        }
+
+        function loadCities() {
+            const district = document.getElementById('district').value;
+            // Call your get_cities API here
+            console.log('Loading cities for district:', district);
+            // Populate the city dropdown with the response
+        }
+
+        function loadSchools() {
+            const city = document.getElementById('city').value;
+            // Call your get_schools API here
+            console.log('Loading schools for city:', city);
+            // Populate the school dropdown with the response
+        }
+
+        document.getElementById('teacherForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Gather form data
+            const formData = new FormData(this);
+            // Call your create_teacher API here
+            console.log('Submitting form data:', Object.fromEntries(formData));
+        });
+    </script>
+</body>
+</html>
