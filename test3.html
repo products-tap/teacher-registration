@@ -228,8 +228,20 @@
             document.getElementById('district').value = '';
         });
 
-        // ... (keep the existing sendOTP and verifyOTP functions) ...
+        function sendOTP() {
+            const phone = document.getElementById('phone').value;
+            // Call your send_otp API here
+            console.log('Sending OTP to', phone);
+            document.getElementById('otpSection').style.display = 'block';
+        }
 
+        function verifyOTP() {
+            const otp = document.getElementById('otp').value;
+            // Call your verify_otp API here
+            console.log('Verifying OTP:', otp);
+        }
+
+    
         document.getElementById('teacherForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const inputs = this.querySelectorAll('input[required]');
